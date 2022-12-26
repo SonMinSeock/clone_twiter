@@ -8,6 +8,7 @@ import {
   onSnapshot,
   orderBy,
 } from "firebase/firestore";
+import Tweet from "components/Tweet";
 
 // 홈화면 페이지
 function Home({ userObj }) {
@@ -63,9 +64,11 @@ function Home({ userObj }) {
       </form>
       <div>
         {tweets.map((tweet) => (
-          <div key={tweet.id}>
-            <h4>{tweet.text}</h4>
-          </div>
+          <Tweet
+            key={tweet.id}
+            tweetObj={tweet}
+            isOwner={tweet.creatorId === userObj.uid}
+          />
         ))}
       </div>
     </>
