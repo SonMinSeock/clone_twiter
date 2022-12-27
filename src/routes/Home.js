@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { dbService } from "fbase";
+import { dbService, storageService } from "fbase";
 import {
   collection,
   addDoc,
@@ -9,6 +9,8 @@ import {
   orderBy,
 } from "firebase/firestore";
 import Tweet from "components/Tweet";
+import { v4 as uuidv4 } from "uuid";
+import { ref, uploadString, getDownloadURL } from "firebase/storage";
 
 // 홈화면 페이지
 function Home({ userObj }) {
@@ -19,12 +21,22 @@ function Home({ userObj }) {
 
   const onSubmit = async (event) => {
     event.preventDefault();
+    let attachmentUrl = "";
+    if (attachment !== "") {
+      const fileRef = ref(storageService, `${userObj.uid}/${uuidv4()}`);
+      const response = await uploadString(fileRef, attachment, "data_url");
+      attachmentUrl = await getDownloadURL(response.ref);
+      //console.log(attachmentUrl);
+    }
+
     await addDoc(collection(dbService, "tweet"), {
       text: tweet,
       createdAt: Date.now(),
       creatorId: userObj.uid,
+      attachmentUrl,
     });
     setTweet("");
+    setAttachment("");
   };
 
   const onChange = (event) => {
