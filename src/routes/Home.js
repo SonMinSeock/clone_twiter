@@ -14,6 +14,8 @@ import Tweet from "components/Tweet";
 function Home({ userObj }) {
   const [tweet, setTweet] = useState("");
   const [tweets, setTweets] = useState([]);
+  // url 관리 하기위한 상태
+  const [attachment, setAttachment] = useState("");
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -50,6 +52,29 @@ function Home({ userObj }) {
 
   console.log(tweets);
 
+  const onFileChange = (event) => {
+    const {
+      target: { files },
+    } = event;
+
+    // 파일 관련정보 저장
+    const theFile = files[0];
+
+    // 웹 브라우저에 사진 출력 해보기.
+    // 브라우저 API인 FileReader 클래스 이용
+    const reader = new FileReader();
+
+    reader.onloadend = (finishedEvent) => {
+      const {
+        currentTarget: { result },
+      } = finishedEvent;
+      setAttachment(result);
+    };
+    reader.readAsDataURL(theFile);
+  };
+
+  const onClearAttachment = () => setAttachment("");
+
   return (
     <>
       <form onSubmit={onSubmit}>
@@ -60,7 +85,14 @@ function Home({ userObj }) {
           type="text"
           maxLength={120}
         />
+        <input type="file" accept="image/*" onChange={onFileChange} />
         <input type="submit" value="Tweet" />
+        {attachment && (
+          <div>
+            <img src={attachment} width="50px" height="50px" />
+            <button onClick={onClearAttachment}>Clear</button>
+          </div>
+        )}
       </form>
       <div>
         {tweets.map((tweet) => (
