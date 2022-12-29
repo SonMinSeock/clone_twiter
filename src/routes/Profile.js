@@ -1,31 +1,46 @@
 // 프로필 페이지
-import { auth, dbService } from "fbase";
-import { signOut } from "firebase/auth";
-import { query, collection, where, orderBy, getDocs } from "firebase/firestore";
-import { useEffect } from "react";
+import { async } from "@firebase/util";
+import { auth } from "fbase";
+import { signOut, updateProfile } from "firebase/auth";
+import { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
 function Profile({ userObj }) {
+  const [newDisplayName, setDisplayName] = useState(userObj.displayName);
   const navigate = useNavigate();
+
   const onLogOutClick = () => {
     signOut(auth);
     navigate("/", { replace: true });
   };
 
-  useEffect(async () => {
-    const q = await query(
-      collection(dbService, "tweet"),
-      where("creatorId", "==", userObj.uid),
-      orderBy("createdAt", "asc")
-    );
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    if (userObj.displayName !== newDisplayName) {
+      await updateProfile(userObj, { displayName: newDisplayName });
+    }
+  };
 
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => console.log("profile query : ", doc.data()));
-  }, []);
+  const onChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+
+    setDisplayName(value);
+  };
 
   return (
     <>
+      <form onSubmit={onSubmit}>
+        <input
+          type="text"
+          placeholder="Display Name"
+          value={newDisplayName}
+          onChange={onChange}
+        />
+        <input type="submit" value="Update Profile" />
+      </form>
       <button onClick={onLogOutClick}>Log Out</button>
     </>
   );
