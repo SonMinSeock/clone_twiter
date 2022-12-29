@@ -6,7 +6,7 @@ import { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
-function Profile({ userObj }) {
+function Profile({ userObj, refreshUser }) {
   const [newDisplayName, setDisplayName] = useState(userObj.displayName);
   const navigate = useNavigate();
 
@@ -20,6 +20,7 @@ function Profile({ userObj }) {
     if (userObj.displayName !== newDisplayName) {
       await updateProfile(userObj, { displayName: newDisplayName });
     }
+    refreshUser();
   };
 
   const onChange = (event) => {
