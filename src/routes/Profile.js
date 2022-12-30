@@ -1,13 +1,11 @@
 // 프로필 페이지
+import ProfileForm from "components/ProfileForm";
 import { auth } from "fbase";
-import { signOut, updateProfile } from "firebase/auth";
-import { useState } from "react";
+import { signOut } from "firebase/auth";
 
 import { useNavigate } from "react-router-dom";
 
 function Profile({ userObj, refreshUser }) {
-  const [newDisplayName, setDisplayName] = useState(userObj.displayName);
-
   const navigate = useNavigate();
 
   const onLogOutClick = () => {
@@ -15,34 +13,9 @@ function Profile({ userObj, refreshUser }) {
     navigate("/", { replace: true });
   };
 
-  const onSubmit = async (event) => {
-    event.preventDefault();
-    if (userObj.displayName !== newDisplayName) {
-      await updateProfile(userObj, { displayName: newDisplayName });
-    }
-    refreshUser();
-  };
-
-  const onChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-
-    setDisplayName(value);
-  };
-
   return (
     <>
-      <form onSubmit={onSubmit}>
-        <input
-          type="text"
-          placeholder="Display Name"
-          value={newDisplayName}
-          onChange={onChange}
-        />
-        <input type="submit" value="Update Profile" />
-        <span>{}</span>
-      </form>
+      <ProfileForm userObj={userObj} refreshUser={refreshUser} />
       <button onClick={onLogOutClick}>Log Out</button>
     </>
   );
