@@ -1,5 +1,4 @@
 // 프로필 페이지
-import { async } from "@firebase/util";
 import { auth } from "fbase";
 import { signOut, updateProfile } from "firebase/auth";
 import { useState } from "react";
@@ -8,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 function Profile({ userObj, refreshUser }) {
   const [newDisplayName, setDisplayName] = useState(userObj.displayName);
+
   const navigate = useNavigate();
 
   const onLogOutClick = () => {
@@ -41,6 +41,7 @@ function Profile({ userObj, refreshUser }) {
           onChange={onChange}
         />
         <input type="submit" value="Update Profile" />
+        <span>{}</span>
       </form>
       <button onClick={onLogOutClick}>Log Out</button>
     </>
