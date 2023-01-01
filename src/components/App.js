@@ -7,9 +7,11 @@ function App() {
   const [userObj, setUserObj] = useState(null);
   const [changeName, setChangeName] = useState(false);
 
+  //console.log("App 컴포넌트!");
   useEffect(() => {
     console.log("firebase auth data...");
     onAuthStateChanged(auth, (user) => {
+      //console.log("onAuthStateChanged!!");
       if (user) {
         setUserObj(user);
       } else {

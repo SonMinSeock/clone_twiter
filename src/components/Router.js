@@ -5,23 +5,37 @@ import Navigation from "./Navigation";
 import Profile from "routes/Profile";
 
 const AppRouter = ({ isLoggedIn, userObj, refreshUser }) => {
+  //console.log("로그인 여부 : ", isLoggedIn);
   return (
     <Router>
       {isLoggedIn && <Navigation userObj={userObj} />}
-      <Routes>
-        {isLoggedIn ? (
-          <>
-            <Route path="/" element={<Home userObj={userObj} />} />
-            <Route
-              path="/profile"
-              element={<Profile userObj={userObj} refreshUser={refreshUser} />}
-            />
-          </>
-        ) : (
-          <Route path="/" element={<Auth />} />
-        )}
-        <Route />
-      </Routes>
+      <div
+        style={{
+          maxWidth: 890,
+          width: "100%",
+          margin: "0 auto",
+          marginTop: 80,
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Routes>
+          {isLoggedIn ? (
+            <>
+              <Route path="/" element={<Home userObj={userObj} />} />
+              <Route
+                path="/profile"
+                element={
+                  <Profile userObj={userObj} refreshUser={refreshUser} />
+                }
+              />
+            </>
+          ) : (
+            <Route path="/" element={<Auth />} />
+          )}
+          <Route />
+        </Routes>
+      </div>
     </Router>
   );
 };

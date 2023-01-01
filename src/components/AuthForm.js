@@ -21,8 +21,8 @@ function AuthForm() {
       } else {
         // log in
         data = await signInWithEmailAndPassword(auth, email, password);
+        console.log("일반 로그인 : ", data);
       }
-      console.log(data);
     } catch (error) {
       setError(error.message);
     }
@@ -43,7 +43,7 @@ function AuthForm() {
 
   return (
     <>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} className="container">
         <input
           name="email"
           value={email}
@@ -51,6 +51,7 @@ function AuthForm() {
           type="email"
           placeholder="Email"
           required
+          className="authInput"
         />
         <input
           name="password"
@@ -59,11 +60,16 @@ function AuthForm() {
           type="password"
           placeholder="Password"
           required
+          className="authInput"
         />
-        <input type="submit" value={newAccount ? "Create Account" : "Log In"} />
+        <input
+          type="submit"
+          value={newAccount ? "Create Account" : "Log In"}
+          className="authInput authSubmit"
+        />
         {error}
       </form>
-      <span onClick={toggleAccount}>
+      <span onClick={toggleAccount} className="authSwitch">
         {newAccount ? "Sing In" : "Create Account"}
       </span>
     </>

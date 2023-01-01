@@ -14,10 +14,12 @@ function Profile({ userObj, refreshUser }) {
   };
 
   return (
-    <>
+    <div className="container">
       <ProfileForm userObj={userObj} refreshUser={refreshUser} />
-      <button onClick={onLogOutClick}>Log Out</button>
-    </>
+      <span className="formBtn cancelBtn logOut" onClick={onLogOutClick}>
+        Log Out
+      </span>
+    </div>
   );
 }
 

@@ -20,14 +20,21 @@ function ProfileForm({ userObj, refreshUser }) {
     setDisplayName(value);
   };
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} className="profileForm">
       <input
         type="text"
         placeholder="Display Name"
         value={newDisplayName}
         onChange={onChange}
+        autoFocus
+        className="formInput"
       />
-      <input type="submit" value="Update Profile" />
+      <input
+        type="submit"
+        value="Update Profile"
+        className="formBtn"
+        style={{ marginTop: 10 }}
+      />
       <span>{}</span>
     </form>
   );
